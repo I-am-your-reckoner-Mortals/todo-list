@@ -1,0 +1,9 @@
+task:
+  priority:
+    1: wery low
+    2: low
+    3: medium
+    4: hiegth
+    5: wery hiegth
+    6: urgent
+  status: asd

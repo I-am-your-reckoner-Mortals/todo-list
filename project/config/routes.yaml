@@ -1,0 +1,7 @@
+#Auto redirect to homepage after login / logout
+homepage:
+  path: /
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+  defaults:
+    path: /home
+    permanent: true

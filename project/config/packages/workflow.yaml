@@ -1,0 +1,36 @@
+framework:
+  workflows:
+    task:
+      type: 'state_machine'
+      marking_store:
+        type: 'method'
+        property: 'status'
+      supports:
+        - App\Entity\Task
+      initial_marking: none
+      places:
+        - none
+        - analyze
+        - todo
+        - in_progress
+        - done
+        - rejected
+      transitions:
+        to_analyze:
+          from: none
+          to: analyze
+        to_work:
+          from: none
+          to: todo
+        in_work:
+          from: [ todo, analyze ]
+          to: in_progress
+        compleate:
+          from: in_progress
+          to: done
+        failed:
+          from: [ in_progress, analyze, todo ]
+          to: rejected
+        remake:
+          from: done
+          to: analyze
