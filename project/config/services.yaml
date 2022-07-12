@@ -26,6 +26,8 @@ services:
 
     App\Services\UserService: ~
 
+    App\Twig\EnvExtension:
+        tags: ['twig.extension']
 
     App\Controller\RegistrationController:
         arguments:
