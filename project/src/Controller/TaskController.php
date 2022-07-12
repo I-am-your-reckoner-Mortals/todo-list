@@ -49,6 +49,39 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @Route("/task/{id}/create_child", name="task_create_child")
+     */
+    public function createChild(Request $request, int $id): Response
+    {
+        $form = $this->createForm(TaskFormType::class, new Task());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->taskService->create(
+                $form->getData(),
+                $this->getUser(),
+                $this->taskRepository->find(['id' => $id])
+            );
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->renderForm('task/task__create.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/task/{id}/add_child", name="task_add_child", requirements={"id"="\d+"})
+     */
+    public function addChild(): Response
+    {
+        return $this->render('task/task__create.html.twig', [
+            'controller_name' => 'TaskController',
+        ]);
+    }
+
+    /**
      * @Route("/task/{id}/delete", name="task_delete", requirements={"id"="\d+"})
      */
     public function delete(): Response
@@ -67,7 +100,7 @@ class TaskController extends AbstractController
         $form = $this->createForm(TaskFormType::class, $task);
 
         return $this->render('task/task__view.html.twig', [
-            'task' => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -90,7 +123,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->renderForm('task/task__create.html.twig', [
+        return $this->renderForm('task/task__edit.html.twig', [
             'form' => $form,
         ]);
     }

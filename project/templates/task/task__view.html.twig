@@ -7,12 +7,12 @@
     </style>
 
     <div class="example-wrapper">
-        {{ form_start(task)  }}
-            {{ form_row(task.title, { 'attr':{'disabled':'disabled'} } ) }}
-            {{ form_row(task.status, { 'attr':{'disabled':'disabled'} }) }}
-            {{ form_row(task.priority, { 'attr':{'disabled':'disabled'} }) }}
-            {{ form_row(task.description, { 'attr':{'disabled':'disabled'} }) }}
-        {{ form_end(task) }}
+        {{ form_start(form) }}
+        {% for task in form %}
+            {{ form_row(task, {'attr': {'disabled': 'disabled' }}) }}
+        {% endfor %}
+        {{ form_end(form) }}
+        <a href="{{ path('task_edit', {'id': form.vars.data.id}) }}" type="button" class="btn btn-primary mt-3">Edit</a>
     </div>
 {% endblock %}
 

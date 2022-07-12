@@ -58,16 +58,10 @@ class Task extends BaseEntity
     private ?User $assignTo;
 
     /**
-     * @var Task[]
      *
-     * @ORM\ManyToMany(targetEntity="Task")
+     * @ORM\ManyToOne(targetEntity="Task", inversedBy="task")
     */
     private $childTask;
-
-    public function __construct()
-    {
-        $this->childTask = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -139,24 +133,18 @@ class Task extends BaseEntity
         $this->assignTo = $assignTo;
     }
 
-    /**
-     * @return Task[]
-     */
-    public function getChildTask(): array
+    public function getChildTask(): ?Task
     {
         return $this->childTask;
     }
 
-    public function addChildTask(Task $task): self
+    public function setChildTask(?Task $task): void
     {
-        if (!$this->childTask->contains($task)) {
-            $this->childTask[] = $task;
-        }
-        return $this;
+        $this->childTask = $task;
     }
-    public function removeChildTask(Task $task): self
+
+    public function __toString(): string
     {
-        $this->childTask->removeElement($task);
-        return $this;
+        return $this->id;
     }
 }

@@ -26,8 +26,13 @@ class TaskService
 
     public function create(
         Task $task,
-        User $createdBy
+        User $createdBy,
+        Task $childTask = null
     ): Task {
+        if ($childTask != null) {
+            $task->setChildTask($childTask);
+        }
+
         $task->setCreatedBy($createdBy);
 
         $this->taskValidator->validate($task);

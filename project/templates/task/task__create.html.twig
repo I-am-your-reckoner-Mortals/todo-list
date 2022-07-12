@@ -9,12 +9,8 @@
 </style>
 
 <div class="example-wrapper">
-    {{ form_start(form) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.status) }}
-        {{ form_row(form.priority) }}
-        {{ form_row(form.description) }}
+    {{form_start(form)}}
         <button type="submit" class="btn btn-primary mt-3">Apply</button>
-    {{ form_end(form) }}
+    {{form_end(form)}}
 </div>
 {% endblock %}

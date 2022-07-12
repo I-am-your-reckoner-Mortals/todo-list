@@ -6,6 +6,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TaskDTO
 {
+    public int $id;
+
     /**
      * @Assert\NotBlank
     */
