@@ -12,6 +12,14 @@ use Symfony\Component\Validator\Constraints\Collection;
  */
 class Task extends BaseEntity
 {
+    const PRIORITIES = [
+        1 => 'very low',
+        2 => 'low',
+        3 => 'medium',
+        4 => 'height',
+        5 => 'very height',
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -79,6 +87,11 @@ class Task extends BaseEntity
     public function getPriority(): int
     {
         return $this->priority;
+    }
+
+    public function getPriorityName(): string
+    {
+        return self::PRIORITIES[$this->priority];
     }
 
     public function setPriority(int $priority): void

@@ -35,7 +35,11 @@ class TaskFormType extends AbstractType
                     'choices' => $this->taskService->getAllowedStatuses($options['data'])
                 ]
             )
-            ->add('priority')
+            ->add('priority',
+                ChoiceType::class,
+                [
+                    'choices' => array_flip(Task::PRIORITIES)
+                ])
             ->add('description');
     }
 

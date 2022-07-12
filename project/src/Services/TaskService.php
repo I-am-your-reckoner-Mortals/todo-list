@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Task;
 use App\Entity\User;
+use App\Validator\TaskValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 
@@ -11,13 +12,16 @@ class TaskService
 {
     private WorkflowInterface $taskStateMachine;
     private EntityManagerInterface $entityManager;
+    private TaskValidator $taskValidator;
 
     public function __construct(
         WorkflowInterface $taskStateMachine,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        TaskValidator $taskValidator
     ) {
         $this->taskStateMachine = $taskStateMachine;
         $this->entityManager = $entityManager;
+        $this->taskValidator = $taskValidator;
     }
 
     public function create(
@@ -25,6 +29,8 @@ class TaskService
         User $createdBy
     ): Task {
         $task->setCreatedBy($createdBy);
+
+        $this->taskValidator->validate($task);
 
         $this->entityManager->persist($task);
         $this->entityManager->flush();
