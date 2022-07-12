@@ -23,8 +23,8 @@ class TaskFixtures extends Fixture
         $manager->flush();
 
         $user = new User();
-        $user->setName('BAD');
-        $user->setSurname('PM');
+        $user->setName('bad');
+        $user->setSurname('pm');
         $user->setEmail('bad_pm@bad.pm.schoool.org');
         $user->setPassword(hash('md5', 'password'));
         $user->setRoles([$role]);
