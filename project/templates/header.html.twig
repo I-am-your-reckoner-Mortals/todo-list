@@ -1,0 +1,37 @@
+{% block header %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
+        <a class="navbar-brand" href="{{ path('app_home') }}">
+            <span class="text-success">To</span>
+            <span class="text-warning"> Do</span>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+            <div class="actions mx-5">
+                {% if 'ROLE_MANAGER' in app.user.getRoles() %}
+                    <a href="{{ path("task_create") }}" class="btn btn-primary mx-10" role="button">Create Task</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="auth">
+            {% if app.user is null %}
+                <a href="{{ path("app_login") }}" class="btn btn-primary" role="button">SignIn</a>
+                <a href="{{ path("app_register") }}" class="btn btn-secondary" role="button">Register</a>
+            {% else %}
+                <a href="{{ path("app_logout") }}" class="btn btn-primary" role="button">LogOut</a>
+            {% endif %}
+        </div>
+    </nav>
+{% endblock %}

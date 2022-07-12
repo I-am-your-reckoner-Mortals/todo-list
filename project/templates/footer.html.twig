@@ -1,0 +1,13 @@
+{% block footer %}
+    <div class="position-relative fixed-bottom container-fluid">
+        <div class="links float-start">
+            <div>
+                <i class="fa-brands fa-github"></i>
+                <a href="{{ get_env('GITHUB_LINK') }}">Git Hub</a>
+            </div>
+        </div>
+        <div class="version float-end">
+            version = $version
+        </div>
+    </div>
+{% endblock %}

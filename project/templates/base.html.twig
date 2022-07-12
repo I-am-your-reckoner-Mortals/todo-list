@@ -15,10 +15,11 @@
         {% endblock %}
     </head>
     <body>
-        {% block head %}
-        {% endblock %}
+        {{ block("header", "header.html.twig") }}
 
         {% block body %}
         {% endblock %}
+
+        {{ block("footer", "footer.html.twig") }}
     </body>
 </html>
