@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Form\TaskAddChildFormType;
 use App\Form\TaskFormType;
 use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,11 +76,31 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/{id}/add_child", name="task_add_child", requirements={"id"="\d+"})
      */
-    public function addChild(): Response
+    public function addChild(Request $request, int $id): Response
     {
-        return $this->render('task/task__create.html.twig', [
-            'controller_name' => 'TaskController',
+        $task = $this->taskRepository->find(['id' => $id]);
+
+        $form = $this->createForm(TaskAddChildFormType::class, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->renderForm('task/task_add_child__view.html.twig', [
+            'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/task/?search={search}", name="task_search")
+     */
+    public function search(Request $search): Response
+    {
+        return new JsonResponse(
+            $this->taskRepository->findPossibleChildTask($search)
+        );
     }
 
     /**

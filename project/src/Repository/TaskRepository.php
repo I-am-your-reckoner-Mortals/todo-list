@@ -22,4 +22,30 @@ class TaskRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Task::class);
     }
+
+//    /**
+//     * @return Task[]
+//     */
+//    public function findTaskByTitleOrId(string $name): array
+//    {
+//        $qb = $this->createQueryBuilder('t');
+//        $qb
+//            ->where($qb->expr()->like('t.title',':likeName'))
+//            ->orWhere($qb->expr()->like('t.id', ':likeName'))
+//            ->setParameter(':likeName', '%'.$name.'%' )
+//            ->setMaxResults(10);
+//        return $qb->getQuery()->getResult();
+//    }
+
+    /**
+     * @return Task[]
+    */
+    public function findPossibleChildTasks(int $id): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->where($qb->expr()->neq('t.id',':id'))
+            ->setParameter(':id', $id );
+        return $qb->getQuery()->getResult();
+    }
 }

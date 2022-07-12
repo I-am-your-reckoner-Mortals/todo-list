@@ -145,6 +145,6 @@ class Task extends BaseEntity
 
     public function __toString(): string
     {
-        return $this->id;
+        return $this->id . ': ' . $this->title;
     }
 }
