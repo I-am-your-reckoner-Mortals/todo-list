@@ -20,7 +20,7 @@
                 </li>
             </ul>
             <div class="actions mx-5">
-                {% if 'ROLE_MANAGER' in app.user.getRoles() %}
+                {% if app.user != null and 'ROLE_MANAGER' in app.user.getRoles() %}
                     <a href="{{ path("task_create") }}" class="btn btn-primary mx-10" role="button">Create Task</a>
                 {% endif %}
             </div>
