@@ -95,6 +95,18 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
     },
+    "friendsofsymfony/rest-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.2",
+            "ref": "fa845143b7e0a4c70aedd1a88c549e6d977e9ae5"
+        },
+        "files": [
+            "config/packages/fos_rest.yaml"
+        ]
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
@@ -103,6 +115,15 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.3.0"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.6.1"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -331,6 +352,9 @@
     "symfony/security-http": {
         "version": "v5.4.8"
     },
+    "symfony/serializer": {
+        "version": "v5.4.10"
+    },
     "symfony/service-contracts": {
         "version": "v2.5.1"
     },
@@ -442,5 +466,14 @@
     },
     "twig/twig": {
         "version": "v3.3.10"
+    },
+    "webmozart/assert": {
+        "version": "1.11.0"
+    },
+    "willdurand/jsonp-callback-validator": {
+        "version": "v2.0.0"
+    },
+    "willdurand/negotiation": {
+        "version": "3.1.0"
     }
 }
