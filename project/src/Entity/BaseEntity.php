@@ -10,6 +10,7 @@ use DateTime;
 
 /**
  * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks()
  */
 class BaseEntity
 {
@@ -22,6 +23,11 @@ class BaseEntity
      * @ORM\Column(type="datetime", nullable=true)
      */
     private DateTime $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     public function getCreatedAt(): DateTime
     {
@@ -38,6 +44,9 @@ class BaseEntity
         return $this->updatedAt;
     }
 
+    /**
+     * @ORM\PrePersist
+    */
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new DateTime();
@@ -46,10 +55,5 @@ class BaseEntity
     public function setUpdatedAtValue(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
-    }
-
-    public function setCreatedAtValue(DateTime $createdAt): void
-    {
-        $this->updatedAt = $createdAt;
     }
 }
