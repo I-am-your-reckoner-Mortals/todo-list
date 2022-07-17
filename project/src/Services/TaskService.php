@@ -27,10 +27,10 @@ class TaskService
     public function create(
         Task $task,
         User $createdBy,
-        Task $childTask = null
+        Task $parentTask = null
     ): Task {
-        if ($childTask != null) {
-            $task->setChildTask($childTask);
+        if ($parentTask != null) {
+            $task->setParentTask($parentTask);
         }
 
         $task->setCreatedBy($createdBy);
@@ -46,23 +46,22 @@ class TaskService
     public function edit(
         Task $task,
         User $createdBy
-    ): Task {
+    ): void {
         $task->setCreatedBy($createdBy);
 
         $this->entityManager->persist($task);
         $this->entityManager->flush();
-
-        return $task;
     }
 
-    public  function delete()
+    public  function delete(): void
     {
 
     }
 
-    public function createChild(Task $parentTask)
+    public function update(Task $task): void
     {
-
+        $this->entityManager->persist($task);
+        $this->entityManager->flush();
     }
 
     public function getAllowedStatuses(Task $task): array

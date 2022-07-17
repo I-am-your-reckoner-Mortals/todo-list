@@ -61,7 +61,7 @@ class Task extends BaseEntity
      *
      * @ORM\ManyToOne(targetEntity="Task", inversedBy="task")
     */
-    private $childTask;
+    private $parentTask;
 
     public function getId(): ?int
     {
@@ -133,14 +133,14 @@ class Task extends BaseEntity
         $this->assignTo = $assignTo;
     }
 
-    public function getChildTask(): ?Task
+    public function getParentTask(): ?Task
     {
-        return $this->childTask;
+        return $this->parentTask;
     }
 
-    public function setChildTask(?Task $task): void
+    public function setParentTask(?Task $task): void
     {
-        $this->childTask = $task;
+        $this->parentTask = $task;
     }
 
     public function __toString(): string
