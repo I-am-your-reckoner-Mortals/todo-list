@@ -5,14 +5,10 @@ namespace App\Form;
 
 
 use App\Entity\Task;
-use App\Models\Ordering;
-use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,13 +16,13 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class FilterForm extends AbstractType
 {
-    private TaskRepository $taskRepository;
     private UserRepository $userRepository;
     private WorkflowInterface $taskStateMachine;
 
-    public function __construct(TaskRepository $taskRepository, UserRepository $userRepository, WorkflowInterface $taskStateMachine)
-    {
-        $this->taskRepository = $taskRepository;
+    public function __construct(
+        UserRepository $userRepository,
+        WorkflowInterface $taskStateMachine
+    ) {
         $this->userRepository = $userRepository;
         $this->taskStateMachine = $taskStateMachine;
     }
