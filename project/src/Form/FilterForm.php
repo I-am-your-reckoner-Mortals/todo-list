@@ -48,11 +48,6 @@ class FilterForm extends AbstractType
             'required' => false,
             'empty_data' => null,
         ]);
-//        $builder->add('priority', ChoiceType::class, [
-//            'choices' => array_flip(Task::PRIORITIES),
-//            'required' => false,
-//            'empty_data' => null,
-//        ]);
         $builder->add(
             $builder->create('priority', FormType::class)
                 ->add('priority_start', ChoiceType::class, [
@@ -80,29 +75,12 @@ class FilterForm extends AbstractType
                         'asc' => 'ASC',
                         'desc' => 'DESC',
                     ],
-                    'required' => false,
-                    'empty_data' => null,
                 ])
         );
-//        $builder->add('orderBy', ChoiceType::class, [
-//            'choices' => [
-//                'status_asc' => new Ordering('status', 'ASC'),
-//                'status_desc' => new Ordering('status', 'DESC'),
-//                'priority_asc' => new Ordering('priority', 'ASC'),
-//                'priority_desc' => new Ordering('priority', 'DESC'),
-//                'createdAt_asc' => new Ordering('createdAt', 'ASC'),
-//                'createdAt_desc' => new Ordering('createdAt', 'DESC'),
-//            ],
-//            'required' => false,
-//            'empty_data' => null,
-//        ]);
         $builder->add('apply', SubmitType::class, [
             'attr' => [
                 'class' => 'btn btn-primary mt-3'
             ]
         ]);
-//        $builder->add('sorter', ChoiceType::class, [
-//            'choices' => [],
-//        ]);
     }
 }
