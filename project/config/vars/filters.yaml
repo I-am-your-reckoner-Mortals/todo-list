@@ -1,0 +1,6 @@
+filters:
+  task:
+    - ['user', ['single'] ]
+    - ['user', ['single'] ]
+    - ['user', ['single'] ]
+    - ['user', ['single'] ]

@@ -2,9 +2,12 @@
 
 {% block body %}
 <div class="container-fluid">
+    <div class="container-fluid bg-light p-3 d-flex">
+        {{ block("filter", "filter.html.twig") }}
+    </div>
     {% for task in tasks %}
         {% if loop.first %}
-            <div class="row mt-3">
+            <div class="row mt-3 h-auto">
         {% endif %}
 
             {{ block("task_card", "task/task_card__view.html.twig") }}

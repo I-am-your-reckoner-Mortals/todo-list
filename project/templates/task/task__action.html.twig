@@ -10,7 +10,9 @@
 
 <div class="example-wrapper">
     {{form_start(form)}}
-        {{form(form)}}
+        {% for task in form %}
+            {{ form_row(task) }}
+        {% endfor %}
         <button type="submit" class="btn btn-primary mt-3">Apply</button>
     {{form_end(form)}}
 </div>

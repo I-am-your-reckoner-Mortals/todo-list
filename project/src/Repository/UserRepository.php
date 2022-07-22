@@ -39,4 +39,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    public function getUsers(): array
+    {
+        $result = [];
+         foreach ($this->findAll() as $user) {
+             $name = $user->getId() . ': ' . $user->getFullName();
+             $result[$name] = $user->getId();
+         }
+
+        return $result;
+    }
 }

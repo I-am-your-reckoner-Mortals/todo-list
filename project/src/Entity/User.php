@@ -166,8 +166,13 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
         $this->surname = $surname;
     }
 
-    public function getFullName(): void
+    public function getFullName(): string
     {
-        $this->surname =  $this->name . $this->surname;
+        return $this->name . ' ' . $this->surname;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name . ' ' . $this->surname;
     }
 }

@@ -1,0 +1,16 @@
+{% extends 'home.html.twig' %}
+
+{% block filter %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="filterDropdownMenuButton"
+                data-bs-toggle="dropdown"
+        >
+            Filter
+        </button>
+        <div class="dropdown-menu p-3" aria-labelledby="filterDropdownMenuButton" style="min-width: 20rem !important;">
+            {{ form(filter) }}
+        </div>
+    </div>
+{% endblock %}

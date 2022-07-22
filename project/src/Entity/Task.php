@@ -2,10 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\TaskRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
@@ -56,6 +54,11 @@ class Task extends BaseEntity
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tasks")
      */
     private ?User $assignTo;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+    */
+    private ?DateTime $completedAt;
 
     /**
      *
@@ -141,6 +144,16 @@ class Task extends BaseEntity
     public function setParentTask(?Task $task): void
     {
         $this->parentTask = $task;
+    }
+
+    public function getCompletedAt(): ?DateTime
+    {
+        return $this->completedAt;
+    }
+
+    public function setCompletedAt(?DateTime $completedAt): void
+    {
+        $this->completedAt = $completedAt;
     }
 
     public function __toString(): string

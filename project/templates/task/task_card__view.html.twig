@@ -1,21 +1,22 @@
 {% extends 'home.html.twig' %}
 
 {% block task_card %}
-    <div class="col-6 col-sm-2">
-        <div class="card" style="min-width: 275px; height: 250px">
+        <div class="col-6 col-sm-2 mh-100">
+        <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ task.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ task.getPriorityName }}</h6>
-                <h6 class="card-subtitle mb-2 text-muted">{{ task.status }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">priority: {{ task.getPriorityName }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">status: {{ task.status }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">created by: {{ task.createdBy }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">created by: {{ task.createdAt|date("m/d/Y H:i") }}</h6>
                 <p class="card-text">{{ task.description }}</p>
-                <div class="position-absolute" style="bottom: 5px">
+                <div class="position-relative" style="bottom: 5px">
                     <div class="position-relative">
                         <a href="{{ path("task_show", {'id': task.id}) }}" class="card-link">Show</a>
                         <a href="{{ path("task_edit", {'id': task.id}) }}" class="card-link">Edit</a>
                     </div>
                     <div class="position-relative">
                         <a href="{{ path("task_create_child", {'id': task.id}) }}" class="card-link">Create Child</a>
-                        <a href="{{ path("task_add_child", {'id': task.id}) }}" class="card-link">Add Child</a>
                     </div>
                 </div>
             </div>

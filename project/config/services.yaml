@@ -24,8 +24,6 @@ services:
         resource: '../src/Controller'
         tags: [ 'controller.service_arguments' ]
 
-    App\Services\UserService: ~
-
     App\Twig\EnvExtension:
         tags: ['twig.extension']
 
@@ -36,5 +34,13 @@ services:
     App\Controller\TaskController:
         arguments:
             $taskService: '@App\Services\TaskService'
+
+    App\Services\FilterService:
+        calls:
+            - ['addFilter', ['createdBy', '@App\Doctrine\Filters\CreatedByFilter']]
+            - ['addFilter', ['title', '@App\Doctrine\Filters\TitleFilter']]
+            - ['addFilter', ['priority', '@App\Doctrine\Filters\PriorityFilter']]
+            - ['addFilter', ['status', '@App\Doctrine\Filters\StatusFilter']]
+            - ['addFilter', ['orderBy', '@App\Doctrine\Filters\Ordering']]
 
 

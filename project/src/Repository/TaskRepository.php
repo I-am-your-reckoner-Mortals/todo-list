@@ -41,12 +41,26 @@ class TaskRepository extends ServiceEntityRepository
     /**
      * @return Task[]
     */
-    public function findPossibleChildTasks(int $id): array
+    public function findTaskExcludeThis(int $id): array
     {
         $qb = $this->createQueryBuilder('t');
         $qb
             ->where($qb->expr()->neq('t.id',':id'))
             ->setParameter(':id', $id );
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return Task[]
+     */
+    public function findChildTasks(Task $task)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb
+            ->where($qb->expr()->eq('t.parentTask',':id'))
+            ->setParameter(':id', $task->getId());
+
         return $qb->getQuery()->getResult();
     }
 }

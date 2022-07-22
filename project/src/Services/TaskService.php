@@ -4,24 +4,30 @@ namespace App\Services;
 
 use App\Entity\Task;
 use App\Entity\User;
+use App\Models\TaskStatuses;
+use App\Repository\TaskRepository;
 use App\Validator\TaskValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
+use TaskDoneException;
 
 class TaskService
 {
     private WorkflowInterface $taskStateMachine;
     private EntityManagerInterface $entityManager;
     private TaskValidator $taskValidator;
+    private TaskRepository $taskRepository;
 
     public function __construct(
         WorkflowInterface $taskStateMachine,
         EntityManagerInterface $entityManager,
-        TaskValidator $taskValidator
+        TaskValidator $taskValidator,
+        TaskRepository $taskRepository
     ) {
         $this->taskStateMachine = $taskStateMachine;
         $this->entityManager = $entityManager;
         $this->taskValidator = $taskValidator;
+        $this->taskRepository = $taskRepository;
     }
 
     public function create(
@@ -53,9 +59,29 @@ class TaskService
         $this->entityManager->flush();
     }
 
-    public  function delete(): void
+    /**
+     * @throws TaskDoneException
+     */
+    public  function delete(Task $task): void
+    {
+        if ($task->getStatus() === TaskStatuses::DONE) {
+            throw new TaskDoneException();
+        }
+
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
+    }
+
+    public function isChildComplete(Task $task): bool
     {
 
+        foreach ($this->taskRepository->findChildTasks($task) as $childTask) {
+            if ($childTask->getStatus() !== TaskStatuses::DONE ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function update(Task $task): void

@@ -3,28 +3,83 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Form\FilterForm;
 use App\Form\TaskFormType;
 use App\Repository\TaskRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Services\FilterService;
+use Exception;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Controller\Annotations as FOSRest;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\TaskService;
 
-class TaskController extends AbstractController
+class TaskController extends AbstractFOSRestController
 {
     private TaskService $taskService;
     private TaskRepository $taskRepository;
+    private FilterService $filterService;
 
     public function __construct(
         TaskService $taskService,
-        TaskRepository $taskRepository
+        TaskRepository $taskRepository,
+        FilterService $filterService
     ) {
         $this->taskService = $taskService;
         $this->taskRepository = $taskRepository;
+        $this->filterService = $filterService;
     }
 
+    /**
+     * @Route("/task", name="app_home")
+     *
+     * @FOSRest\QueryParam(name="status", allowBlank=true, description="Filter by status")
+     * @FOSRest\QueryParam(name="priority", allowBlank=true, requirements="\d+", description="Filter by priority")
+     * @FOSRest\QueryParam(name="createdBy", allowBlank=true, description="Filter by created task user")
+     * @FOSRest\QueryParam(name="asignTo", allowBlank=true, description="Filter by asign task user")
+     * @FOSRest\QueryParam(name="createdAt", allowBlank=true, description="Page")
+     * @FOSRest\QueryParam(name="updatedAt", allowBlank=true, description="Page")
+     * @FOSRest\QueryParam(name="completedAt", allowBlank=true, description="Page")
+     *
+     * @FOSRest\QueryParam(name="orderBy", allowBlank=true, description="Page")
+     *
+     */
+    public function index(ParamFetcher $paramFetcher, Request $request): Response
+    {
+        $criteria = array_filter($paramFetcher->all(), function ($param) {
+            return $param !== 'orderBy';
+        }, ARRAY_FILTER_USE_KEY);
+
+        $filterForm = $this->createForm(FilterForm::class);
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $tasks = $this->filterService->search(
+                $this->taskRepository,
+                $filterForm->getData(),
+                $paramFetcher->get('orderBy')
+            );
+
+            return $this->render('home.html.twig', [
+                'filter' => $filterForm->createView(),
+                'tasks' => $tasks,
+            ]);
+        }
+
+
+        $tasks = $this->filterService->search(
+            $this->taskRepository,
+            $criteria,
+            $paramFetcher->get('orderBy')
+        );
+
+        return $this->render('home.html.twig', [
+            'filter' => $filterForm->createView(),
+            'tasks' => $tasks,
+        ]);
+    }
 
     /**
      * @Route("/task/create", name="task_create")
@@ -44,7 +99,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->renderForm('task/task__create.html.twig', [
+        return $this->renderForm('task/task__action.html.twig', [
             'form' => $form,
         ]);
     }
@@ -67,7 +122,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->renderForm('task/task__create.html.twig', [
+        return $this->renderForm('task/task__action.html.twig', [
             'form' => $form,
         ]);
     }
@@ -75,9 +130,20 @@ class TaskController extends AbstractController
     /**
      * @Route("/task/{id}/delete", name="task_delete", requirements={"id"="\d+"})
      */
-    public function delete(): Response
+    public function delete(Request $request, int $id): Response
     {
-        return $this->render('task/task__create.html.twig', [
+        $task = $this->taskRepository->findOneBy(['id' => $id]);
+
+        try {
+            $this->taskService->delete($task);
+        } catch (Exception $e) {
+            return $this->render('task/task__action.html.twig', [
+                'error' => $e->getMessage(),
+                'controller_name' => 'TaskController',
+            ]);
+        }
+
+        return $this->render('task/task__action.html.twig', [
             'controller_name' => 'TaskController',
         ]);
     }
@@ -110,7 +176,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->renderForm('task/task__edit.html.twig', [
+        return $this->renderForm('task/task__action.html.twig', [
             'form' => $form,
         ]);
     }

@@ -54,7 +54,7 @@ class TaskFormType extends AbstractType
     public function mapChildTasks(int $id): array
     {
         $mappedRes = [];
-        foreach ($this->taskRepository->findPossibleChildTasks($id) as $task) {
+        foreach ($this->taskRepository->findTaskExcludeThis($id) as $task) {
             $mappedRes[$task->getId() . ':' . $task->getTitle()] = $task;
         }
 

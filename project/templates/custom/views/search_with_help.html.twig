@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block search_with_help %}
+    <style>
+        .wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="container m-3 w-25">
+        <div class="input-wrapper position-relative">
+            <input id="input" type="search" role="combobox" class="search w-100">
+        </div>
+        <div class="search-help dropdown">
+            <button class="dropdown-item" role="option">A</button>
+            <button class="dropdown-item" role="option">A</button>
+            <button class="dropdown-item" role="option">A</button>
+            <button class="dropdown-item" role="option">A</button>
+            <button class="dropdown-item" role="option">A</button>
+            <button class="dropdown-item" role="option">A</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+
+        // console.log($(document))
+        $('#input')[0].addEventListener('input', (event) => {
+            console.log($('#select'));
+        })
+
+        // $('#select')
+    </script>
+{% endblock %}
