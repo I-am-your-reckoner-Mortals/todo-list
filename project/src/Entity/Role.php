@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use function Webmozart\Assert\Tests\StaticAnalysis\upper;
 
 /**
  * @ORM\Entity(repositoryClass=RoleRepository::class)
@@ -51,7 +52,7 @@ class Role
 
     public function setRole(string $role): self
     {
-        $this->role = 'ROLE_' . $role;
+        $this->role = 'ROLE_' . upper($role);
 
         return $this;
     }
