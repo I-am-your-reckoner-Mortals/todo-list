@@ -7,10 +7,9 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
-import 'bootstrap/'
+import 'bootstrap'
 
 //Add jQuery
-const $ = require('jquery')
-require('bootstrap')
+// const $ = require('jquery')
 
-global.$ = global.jQuery = $;
+// global.$ = global.jQuery = $;
