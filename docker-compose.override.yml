@@ -3,6 +3,8 @@ services:
   php:
     ports:
         - "${PHP_EXPOSE_PORT}:9000"
+    env_file:
+      - ./project/.env
 
   mysql:
     ports:

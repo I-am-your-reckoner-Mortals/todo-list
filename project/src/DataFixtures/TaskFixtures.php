@@ -6,12 +6,15 @@ namespace App\DataFixtures;
 use App\Entity\Role;
 use App\Entity\Task;
 use App\Entity\User;
+use App\Models\TaskPriorities;
+use App\Models\TaskStatuses;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordHasherEncoder;
 
-class TaskFixtures extends Fixture
+class TaskFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -35,62 +38,74 @@ class TaskFixtures extends Fixture
         $tasksData = [
             [
                 'title' => "Сделать ту штуку про которую мы говорили 3 недели назад ",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_LOW,
+                'status' => TaskStatuses::ANALYZE,
                 'description' => "Ну ты же понишь что там надо сделать",
             ],
             [
                 'title' => "Сделать прикольную фитчу (не баг)",
-                'priority' => 2,
+                'priority' => TaskPriorities::LOW,
+                'status' => TaskStatuses::TODO,
                 'description' => "Зделать прикольную фитчу",
             ],
             [
                 'title' => "Пофиксить баг",
-                'priority' => 1,
+                'priority' => TaskPriorities::LOW,
+                'status' => TaskStatuses::ANALYZE,
                 'description' => "Пофиксить баг",
             ],
             [
                 'title' => "Пофиксить баг",
-                'priority' => 1,
+                'priority' => TaskPriorities::LOW,
+                'status' => TaskStatuses::ANALYZE,
                 'description' => "Пофиксить баг",
             ],
             [
                 'title' => "Пофиксить баг",
-                'priority' => 1,
+                'priority' => TaskPriorities::LOW,
+                'status' => TaskStatuses::ANALYZE,
                 'description' => "Пофиксить баг",
             ],
             [
                 'title' => "Пофиксить баг",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_HEIGHT,
+                'status' => TaskStatuses::ANALYZE,
                 'description' => "Пофиксить баг",
             ],
             [
                 'title' => "Починить сервер",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_HEIGHT,
+                'status' => TaskStatuses::TODO,
                 'description' => "Починить сервер. Не переходит на google.com",
             ],
             [
                 'title' => "Сделать так чтобы не лагало",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_HEIGHT,
+                'status' => TaskStatuses::TODO,
                 'description' => "Убрать лаги на моём Intel 4004",
             ],
             [
                 'title' => "Сдвинуть кнопку на 3 пикселя в право",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_LOW,
+                'status' => TaskStatuses::TODO,
                 'description' => "Сдвинуть кнопку на 3 пикселя в право",
             ],
             [
                 'title' => "Вернуть кнопку обратно",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_LOW,
+                'status' => TaskStatuses::TODO,
                 'description' => "Вернуть кнопку обратно на 3 пикселя в лево",
             ],
             [
                 'title' => "Обьясни фронту как пользоватся документацией",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_LOW,
+                'status' => TaskStatuses::TODO,
                 'description' => "Обьясни фронту как пользоватся документацией",
             ],
             [
                 'title' => "🔧  🐢  🖼  🔛  📱",
-                'priority' => 1,
+                'priority' => TaskPriorities::VERY_LOW,
+                'status' => TaskStatuses::TODO,
                 'description' => "🔧  🐢  🖼  🔛  📱",
             ],
         ];
@@ -109,5 +124,12 @@ class TaskFixtures extends Fixture
 
         $manager->flush();
 
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            'UserFixtures'
+        ];
     }
 }

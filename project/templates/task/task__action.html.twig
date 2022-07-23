@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TaskController!{% endblock %}
+{% block title %}Edit{% endblock %}
 
 {% block body %}
 <style>
@@ -9,6 +9,11 @@
 </style>
 
 <div class="example-wrapper">
+    {% if error is defined and error != null %}
+        <div class="error bg-danger text-center rounded p-2">
+            <span class="h6 m-auto">{{ error }}</span>
+        </div>
+    {% endif %}
     {{form_start(form)}}
         {% for task in form %}
             {{ form_row(task) }}

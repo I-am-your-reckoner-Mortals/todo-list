@@ -6,8 +6,6 @@ services:
     restart: always
     volumes:
       - ./project:/var/www/project
-    env_file:
-      - ./project/.env
     networks:
       - todo
 

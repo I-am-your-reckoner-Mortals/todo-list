@@ -24,7 +24,7 @@ class UserFixtures extends Fixture
         $userData = [
             [
                 'name' => "super_admin",
-                'role' => "ROLE_SUPER_ADMIN"
+                'role' => "SUPER_ADMIN"
             ],
             [
                 'name' => "admin",

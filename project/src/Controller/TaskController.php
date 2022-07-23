@@ -7,6 +7,7 @@ use App\Form\FilterForm;
 use App\Form\TaskFormType;
 use App\Repository\TaskRepository;
 use App\Services\FilterService;
+use ChildTaskIsNotComplete;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -172,7 +173,15 @@ class TaskController extends AbstractFOSRestController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->taskService->update($task);
+            try {
+                $this->taskService->update($task);
+            } catch (ChildTaskIsNotComplete $e) {
+                return $this->renderForm('task/task__action.html.twig', [
+                    'error' => $e->getMessage(),
+                    'form' => $form,
+                ]);
+            }
+
             return $this->redirectToRoute('app_home');
         }
 

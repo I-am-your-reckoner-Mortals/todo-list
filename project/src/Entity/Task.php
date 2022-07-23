@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Models\TaskPriorities;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,11 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Task extends BaseEntity
 {
     const PRIORITIES = [
-        1 => 'very low',
-        2 => 'low',
-        3 => 'medium',
-        4 => 'height',
-        5 => 'very height',
+        TaskPriorities::VERY_LOW => 'very low',
+        TaskPriorities::LOW => 'low',
+        TaskPriorities::MEDIUM => 'medium',
+        TaskPriorities::HEIGHT => 'height',
+        TaskPriorities::VERY_HEIGHT => 'very height',
     ];
 
     /**

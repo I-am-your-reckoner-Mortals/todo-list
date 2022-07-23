@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Models\TaskStatuses;
 use App\Repository\TaskRepository;
 use App\Validator\TaskValidator;
+use ChildTaskIsNotComplete;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use TaskDoneException;
@@ -84,15 +85,25 @@ class TaskService
         return true;
     }
 
+    /**
+     * @throws ChildTaskIsNotComplete
+     */
     public function update(Task $task): void
     {
+        if($task->getStatus() === TaskStatuses::DONE) {
+            foreach ($this->taskRepository->findChildTasks($task) as $item) {
+                if ($item->getStatus() !== TaskStatuses::DONE) {
+                    throw new ChildTaskIsNotComplete();
+                }
+            }
+        }
+
         $this->entityManager->persist($task);
         $this->entityManager->flush();
     }
 
     public function getAllowedStatuses(Task $task): array
     {
-        //get current status
         $current = array_keys($this->taskStateMachine->getMarking($task)->getPlaces())[0];
         $statuses[$current] = $current;
 
@@ -100,7 +111,7 @@ class TaskService
 
         foreach ($transitions as $transition ) {
             foreach ($transition->getTos() as $toState) {
-                $statuses[$transition->getName()] = $toState;
+                $statuses[$toState] = $toState;
             }
         }
 
