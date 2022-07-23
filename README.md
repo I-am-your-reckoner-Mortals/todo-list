@@ -19,6 +19,9 @@ Based on [PHP][PHP-LINK] and [Symfony][SYMFONY-LINK] framework
 
 ### Setting Up local environment
 
-1. Copy `.env.example` file to `.env` and set your environment variables.
-2. Run
+1. Copy `.env.example` file to `.env` in `project` directory and set your environment variables.
+2. Copy `../.env.docker.example` file to `.env` in `project` directory and set your environment variables.
+3. Copy `.env.docker.example` file to `.env` in `root` directory and set your environment variables.
+4. You may have 2 `.env`. 1-st in `project` directory, 2-nd in directory with `docker-compose.yml` and `docker-compose.override.yml`
+4. Run
    >sh run.sh
