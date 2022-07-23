@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker-compose --env-file ./project/.env build --no-cache
+docker-compose build --no-cache
