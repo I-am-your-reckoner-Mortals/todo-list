@@ -17,10 +17,10 @@ framework:
         - rejected
       transitions:
         to_analyze:
-          from: none
+          from: [ none, rejected ]
           to: analyze
         to_work:
-          from: none
+          from: [ none, rejected ]
           to: todo
         in_work:
           from: [ todo, analyze ]
