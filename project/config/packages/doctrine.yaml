@@ -1,8 +1,17 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        default_connection: default
+        connections:
+            default:
+                driver: pdo_mysql
+                host: '%env(DATABASE_HOST)%'
+                port: '%env(DATABASE_PORT)%'
+                dbname: '%env(DATABASE_NAME)%'
+                user: '%env(DATABASE_USER)%'
+                password: '%env(DATABASE_PASSWORD)%'
+                charset: utf8mb4
         #driver:   %database_driver%
-        driver_class: Doctrine\DBAL\Driver\MsSql\Driver
+        #driver_class: Doctrine\DBAL\Driver\MsSql\Driver
         #charset:  UTF8
 
         # IMPORTANT: You MUST configure your server version,

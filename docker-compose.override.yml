@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  php:
+    ports:
+        - "${PHP_EXPOSE_PORT}:9000"
+
+  mysql:
+    ports:
+        - "${MYSQL_EXPOSE_PORT}:3306"
+
+  nginx:
+    ports:
+        - "${NGINX_EXPOSE_PORT}:80"

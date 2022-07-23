@@ -1,18 +1,18 @@
 version: '3.8'
 services:
   php:
-    build: ./docker/php
+    build: docker/php
     container_name: todo-list-php
     restart: always
     volumes:
       - ./project:/var/www/project
-    ports:
-      - 9010:9000
+    env_file:
+      - .env
     networks:
       - todo
 
   nginx:
-    build: ./docker/nginx
+    build: docker/nginx
     container_name: todo-list-nginx
     restart: always
     volumes:
@@ -21,27 +21,23 @@ services:
     depends_on:
       - php
       - mysql
-    ports:
-      - 8080:80
     networks:
       - todo
 
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
-    container_name: todo-list-db
+    container_name: todo-list-mysql
     restart: always
     volumes:
     - ./db:/var/lib/mysql
-    ports:
-      - 3307:3306
     networks:
       - todo
     environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: todo
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
 
 networks:
   todo:
