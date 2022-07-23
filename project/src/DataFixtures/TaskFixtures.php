@@ -12,10 +12,16 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordHasherEncoder;
 
 class TaskFixtures extends Fixture implements DependentFixtureInterface
 {
+    private UserPasswordHasherInterface $userPasswordHasherInterface;
+
+    public function __construct(UserPasswordHasherInterface $userPasswordHasherInterface)
+    {
+        $this->userPasswordHasherInterface = $userPasswordHasherInterface;
+    }
+
     public function load(ObjectManager $manager)
     {
         $role = new Role();
@@ -28,8 +34,8 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
         $user = new User();
         $user->setName('bad');
         $user->setSurname('pm');
-        $user->setEmail('bad_pm@bad.pm.schoool.org');
-        $user->setPassword(hash('md5', 'password'));
+        $user->setEmail('bad_pm@BadPmSchoool.org');
+        $user->setPassword($this->userPasswordHasherInterface->hashPassword($user,'123456'));
         $user->setRoles([$role]);
 
         $manager->persist($user);
@@ -129,7 +135,7 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            'UserFixtures'
+            UserFixtures::class
         ];
     }
 }
