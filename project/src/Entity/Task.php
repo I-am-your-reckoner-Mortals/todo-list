@@ -67,7 +67,7 @@ class Task extends BaseEntity
     */
     private $parentTask;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

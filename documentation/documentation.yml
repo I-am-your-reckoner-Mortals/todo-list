@@ -1,0 +1,33 @@
+openapi: 3.0.1
+info:
+  title: todo list
+  description: todo list api
+  version: 1.0.0
+servers:
+  - url: /
+security:
+  - token: []
+paths:
+  /task:
+    get:
+      tags:
+        - task
+      summary: Request for get all tasks
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: Language of the content.
+          schema:
+            type: string
+            default: en
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+
+  /task/{id}:
+  /task{id}/edit:
+  /task{id}/delete:

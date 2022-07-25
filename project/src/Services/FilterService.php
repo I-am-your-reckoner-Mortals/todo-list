@@ -12,8 +12,11 @@ class FilterService extends AbstractFilter
     /**
      * @return Task[]
     */
-    public function search(EntityRepository $repository, array $data, string $ordering = null): array
+    public function search(EntityRepository $repository, ?array $data = null, ?array $ordering = null): array
     {
+        if (is_null($data)) {
+            return $repository->findAll();
+        }
 
         $searchCriteria = array_filter($data, fn ($value) => !is_null($value) && $value !== '');
         $qb = $repository->createQueryBuilder('entity');

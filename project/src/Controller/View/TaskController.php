@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\View;
 
 use App\Entity\Task;
 use App\Form\FilterForm;
@@ -35,24 +35,9 @@ class TaskController extends AbstractFOSRestController
 
     /**
      * @Route("/task", name="app_home")
-     *
-     * @FOSRest\QueryParam(name="status", allowBlank=true, description="Filter by status")
-     * @FOSRest\QueryParam(name="priority", allowBlank=true, requirements="\d+", description="Filter by priority")
-     * @FOSRest\QueryParam(name="createdBy", allowBlank=true, description="Filter by created task user")
-     * @FOSRest\QueryParam(name="asignTo", allowBlank=true, description="Filter by asign task user")
-     * @FOSRest\QueryParam(name="createdAt", allowBlank=true, description="Page")
-     * @FOSRest\QueryParam(name="updatedAt", allowBlank=true, description="Page")
-     * @FOSRest\QueryParam(name="completedAt", allowBlank=true, description="Page")
-     *
-     * @FOSRest\QueryParam(name="orderBy", allowBlank=true, description="Page")
-     *
      */
     public function index(ParamFetcher $paramFetcher, Request $request): Response
     {
-        $criteria = array_filter($paramFetcher->all(), function ($param) {
-            return $param !== 'orderBy';
-        }, ARRAY_FILTER_USE_KEY);
-
         $filterForm = $this->createForm(FilterForm::class);
         $filterForm->handleRequest($request);
 
@@ -60,7 +45,7 @@ class TaskController extends AbstractFOSRestController
             $tasks = $this->filterService->search(
                 $this->taskRepository,
                 $filterForm->getData(),
-                $paramFetcher->get('orderBy')
+                [$paramFetcher->get('orderBy')]
             );
 
             return $this->render('home.html.twig', [
@@ -69,11 +54,8 @@ class TaskController extends AbstractFOSRestController
             ]);
         }
 
-
         $tasks = $this->filterService->search(
-            $this->taskRepository,
-            $criteria,
-            $paramFetcher->get('orderBy')
+            $this->taskRepository
         );
 
         return $this->render('home.html.twig', [
@@ -144,9 +126,7 @@ class TaskController extends AbstractFOSRestController
             ]);
         }
 
-        return $this->render('task/task__action.html.twig', [
-            'controller_name' => 'TaskController',
-        ]);
+        return $this->redirectToRoute('app_home');
     }
 
     /**

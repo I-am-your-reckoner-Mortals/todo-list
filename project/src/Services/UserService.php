@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
-use App\Repository\UserRolesRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 

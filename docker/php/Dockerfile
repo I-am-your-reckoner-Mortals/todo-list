@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y \
 		libfreetype6-dev \
 		libjpeg62-turbo-dev \
 		libpng-dev \
+        zip \
 		git \
 		npm \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \

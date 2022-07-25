@@ -1,29 +1,20 @@
 <?php
 
+namespace App\DTO;
 
-use App\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 
-class TaskDTO
+class TaskDTO implements DTOInterface
 {
     public int $id;
-
-    /**
-     * @Assert\NotBlank
-    */
     public string $title;
-
-    /**
-     * @Assert\NotBlank
-     */
     public string $status;
-
-    /**
-     * @Assert\NotBlank
-     */
     public int $priority;
-
     public ?string $description;
 
-    public User $createdBy;
+    public UserDTO $createdBy;
+    public ?UserDTO $assignTo;
+    public ?DateTime $createdAt;
+    public ?DateTime $updatedAt;
+    public ?DateTime $completedAt;
 }
