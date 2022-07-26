@@ -14,6 +14,7 @@ class TaskDTOBuilder
         $dto = new TaskDTO();
 
         $dto->id = $task->getId();
+        $dto->title = $task->getTitle();
         $dto->status = $task->getStatus();
         $dto->priority = $task->getPriority();
         $dto->description = $task->getDescription();

@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\DTO\TaskDTO;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Models\TaskStatuses;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use App\Validator\TaskValidator;
 use ChildTaskIsNotComplete;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use TaskDoneException;
@@ -18,17 +21,20 @@ class TaskService
     private EntityManagerInterface $entityManager;
     private TaskValidator $taskValidator;
     private TaskRepository $taskRepository;
+    private UserRepository $userRepository;
 
     public function __construct(
         WorkflowInterface $taskStateMachine,
         EntityManagerInterface $entityManager,
         TaskValidator $taskValidator,
-        TaskRepository $taskRepository
+        TaskRepository $taskRepository,
+        UserRepository $userRepository
     ) {
         $this->taskStateMachine = $taskStateMachine;
         $this->entityManager = $entityManager;
         $this->taskValidator = $taskValidator;
         $this->taskRepository = $taskRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function create(
@@ -50,14 +56,42 @@ class TaskService
         return $task;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function edit(
         Task $task,
-        User $createdBy
-    ): void {
-        $task->setCreatedBy($createdBy);
+        TaskDTO $data
+    ): Task {
+        $task->setUpdatedAt();
+
+        $task->setTitle($data->title ?? $task->getTitle());
+        $task->setPriority($data->priority ?? $task->getPriority());
+        $task->setStatus($data->status ?? $task->getStatus());
+        $task->setDescription($data->description ?? $task->getDescription());
+
+        if (isset($data->createdBy->id) && !is_null($data->createdBy->id)) {
+            $user = $this->userRepository->findOneBy(['id' => $data->createdBy->id]);
+            if (is_null($user)) {
+                throw new \Exception('createdBy user with this id not found');
+            }
+            $task->setCreatedBy($user);
+        }
+
+        if (isset($data->assignTo->id) && !is_null($data->assignTo->id)) {
+            $user = $this->userRepository->findOneBy(['id' => $data->assignTo->id]);
+            if (is_null($user)) {
+                throw new \Exception('assignTo user with this id not found');
+            }
+            $task->setAssignTo($user);
+        }
+
+        $task->setCreatedAt(new DateTime($data->createdAt) ?? $task->getCreatedAt());
 
         $this->entityManager->persist($task);
         $this->entityManager->flush();
+
+        return $task;
     }
 
     /**
@@ -96,6 +130,7 @@ class TaskService
                     throw new ChildTaskIsNotComplete();
                 }
             }
+            $task->setCompletedAt(new DateTime());
         }
 
         $this->entityManager->persist($task);

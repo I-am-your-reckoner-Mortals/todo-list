@@ -41,6 +41,7 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
 
     /**
      * @var Role[]
+     * @Ignore
      *
      * @ORM\ManyToMany(targetEntity="Role", fetch="EAGER")
      * @ORM\JoinTable(name="user_role",
@@ -51,7 +52,7 @@ class User extends BaseEntity implements UserInterface, PasswordAuthenticatedUse
     private $roles;
 
     /**
-     * @var string The hashed password
+     * @Ignore
      * @ORM\Column(type="string")
      */
     private string $password;
