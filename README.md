@@ -24,6 +24,8 @@ Based on [PHP][PHP-LINK] and [Symfony][SYMFONY-LINK] framework
    > sh start.sh
 * _(Use only 1 time.`.env` file will be created by yours `env.docker.example` and `./project/.env.example` files)_
 
+### Swagger documentation
+_http://localhost:8082/api/doc/#/_ - by default 
 
 ### Docker environment variables
 * `PHP_EXPOSE_PORT` _(string)_ - php expose port (out from container)
