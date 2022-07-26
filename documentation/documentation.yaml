@@ -1,0 +1,236 @@
+openapi: 3.0.1
+info:
+  title: todo list
+  description: todo list api
+  version: 1.0.0
+servers:
+  - url: http://localhost:8082
+security:
+  - bearerAuth: []
+paths:
+  /api/login:
+    post:
+      tags:
+        - auth
+      summary: Request for get all tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+  /api/token/refresh:
+    post:
+      tags:
+        - auth
+      summary: Request for get all tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                refresh_token:
+                  type: string
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+
+  /api/task:
+    get:
+      tags:
+        - task
+      summary: Request for get all tasks
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: Language of the content.
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TaskDTO'
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+
+  /api/task/create:
+    post:
+      tags:
+        - task
+      summary: Request for get all tasks
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: Language of the content.
+          schema:
+            type: string
+            default: en
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+
+  /api/task{id}/edit:
+    post:
+      tags:
+        - task
+      summary: Request for get all tasks
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: Language of the content.
+          schema:
+            type: string
+            default: en
+        - name: id
+          required: true
+          in: path
+          description: object id
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+
+  /api/task{id}/delete:
+    patch:
+      tags:
+        - task
+      summary: Request for get all tasks
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: Language of the content.
+          schema:
+            type: string
+            default: en
+        - name: id
+          required: true
+          in: path
+          description: object id
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Request was sent
+          content: { }
+        502:
+          description: Bad gateway
+          content: { }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Role:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+          example: "manager"
+        role:
+          type: "string"
+          example: "ROLE_MANAGER"
+
+    TaskDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: "int64"
+        title:
+          type: string
+          example: "new task"
+        status:
+          type: string
+          description: "statuses"
+          enum:
+            - "none"
+            - "analyze"
+            - "todo"
+            - "in_progress"
+            - "done"
+            - "reject"
+        priority:
+          type: "integer"
+          description: "priority"
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+        description:
+          type: string
+          example: "new task"
+        createdBy:
+          $ref: '#/components/schemas/UserDTO'
+        assignTo:
+          $ref: '#/components/schemas/UserDTO'
+        createdAt:
+          type: string
+        cupdatedAt:
+          type: string
+        completedAt:
+          type: string
+
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: "int64"
+        name:
+          type: string
+          example: "Joe"
+        surname:
+          type: string
+          example: "Who"
+        email:
+          type: string
+          example: "JoeWho1955@gmail.com"
+        password:
+          type: string
+          example: "Joe_Who_1955"
+        roles:
+          $ref: "#/components/schemas/Role"

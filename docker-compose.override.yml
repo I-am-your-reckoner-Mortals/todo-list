@@ -23,5 +23,12 @@ services:
     networks:
       - todo-list
 
+  apidoc:
+    container_name: ${CONTAINER_PREFIX}apidoc
+    ports:
+      - "8089:8080"
+    networks:
+      - todo-list
+
 networks:
   todo-list:
